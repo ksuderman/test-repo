@@ -9,10 +9,13 @@ on:
       branch-name:
         description: 'Branch name to package'
         required: true
+        default: 'master'
 jobs:
   tag-and-release:
     name: Create a tag and GitHub release for this version.
     runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
     steps:
       - uses: actions/checkout@v4
       - name: Tag and release
