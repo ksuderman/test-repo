@@ -21,7 +21,7 @@ jobs:
       - uses: ksuderman/github-action-galaxy-k8s@master
         with:
           api-key: secret
-          values_file: values.yml
+#          values_file: values.yml
 #            configs:
 #              galaxy.yml:
 #                galaxy:
