@@ -1,4 +1,4 @@
-name: Package and publish the chart
+name: Test the galaxy-k8s action
 on:
   workflow_dispatch:
     inputs:
