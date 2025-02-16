@@ -21,14 +21,14 @@ jobs:
       - uses: ksuderman/github-action-galaxy-k8s@master
         with:
           api-key: secret
-          values: |
-            configs:
-              galaxy.yml:
-                galaxy:
-                  admin_users: admin@example.org
-                  require_login: false
-                  show_welcome_with_login: true
-                  allow_user_creation: true
+          values_file: values.yml
+#            configs:
+#              galaxy.yml:
+#                galaxy:
+#                  admin_users: admin@example.org
+#                  require_login: false
+#                  show_welcome_with_login: true
+#                  allow_user_creation: true
 
       - name: Create a Galaxy user
         run: |
