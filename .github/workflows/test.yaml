@@ -18,9 +18,8 @@ jobs:
       - uses: actions/checkout@v4
         with:
            persist-credentials: false
-      - name: Set thread limit
-        run: echo "OMP_NUM_THREADS=4" >> $GITHUB_ENV
-      - uses: ksuderman/github-action-galaxy-k8s@master
+
+      - uses: ksuderman/github-action-galaxy-k8s/.github/workflows/test-action.yaml@master
         with:
           api-key: secret
 #          values_file: values.yml
