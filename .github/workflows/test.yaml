@@ -12,7 +12,7 @@ on:
         default: 'master'
 jobs:
   install-galaxy:
-    uses: ksuderman/github-action-galaxy-k8s/.github/workflows/test-action.yaml@master
+    uses: ksuderman/github-action-galaxy-k8s/.github/workflows/action.yaml@master
     with:
       api-key: secret
 
