@@ -21,7 +21,6 @@ jobs:
       - name: Set thread limit
         run: echo "OMP_NUM_THREADS=4" >> $GITHUB_ENV
       - uses: ksuderman/github-action-galaxy-k8s@master
-        cores: 4
         with:
           api-key: secret
 #          values_file: values.yml
