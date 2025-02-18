@@ -1,13 +1,12 @@
 name: Test the galaxy-k8s action
 on:
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      values_file:
+        description: 'Values file to use for the Galaxy Helm chart'
+        required: false
 
 jobs:
-#  install-galaxy:
-#    uses: ksuderman/github-action-galaxy-k8s/.github/workflows/action.yaml@master
-#    with:
-#      api-key: secret
-
   install-galaxy:
     name: Install Galaxy and create a user
     runs-on: ubuntu-latest
@@ -19,14 +18,7 @@ jobs:
       - uses: ksuderman/github-action-galaxy-k8s@master
         with:
           api-key: secret
-#          values_file: values.yml
-#            configs:
-#              galaxy.yml:
-#                galaxy:
-#                  admin_users: admin@example.org
-#                  require_login: false
-#                  show_welcome_with_login: true
-#                  allow_user_creation: true
+          values_file: values.yml
 
       - name: Create a Galaxy user
         run: |
@@ -41,20 +33,3 @@ jobs:
           curl -X POST -H "x-api-key: secret" -H "Content-Type: application/json" -d @/tmp/user.json http://localhost:8080/api/users
           
 
-#  tag-and-release:
-#    name: Create a tag and GitHub release for this version.
-#    runs-on: ubuntu-latest
-#    env:
-#      GH_TOKEN: ${{ github.token }}
-#    steps:
-#      - uses: actions/checkout@v4
-#        with:
-#           persist-credentials: false
-#      - name: Tag and release
-#        run: |
-#          git config user.name "GitHub Actions Bot"
-#          git config user.email "<>"
-#          version=v$(cat VERSION)
-#          git tag -a $version -m "Automatic release of $version"
-#          git push origin $version
-#          gh release create $version --generate-notes --latest

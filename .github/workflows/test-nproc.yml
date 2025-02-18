@@ -1,7 +1,0 @@
-name: Test the nproc workflow
-on:
-  workflow_dispatch: {}
-
-jobs:
-  nproc:
-    uses: ./.github/workflows/nproc.yml
