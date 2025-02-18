@@ -19,7 +19,6 @@ jobs:
   install-galaxy:
     name: Install Galaxy and create a user
     runs-on: ubuntu-latest
-    needs: [ install-galaxy ]
     steps:
       - uses: actions/checkout@v4
         with:
