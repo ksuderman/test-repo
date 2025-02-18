@@ -11,13 +11,13 @@ on:
         required: true
         default: 'master'
 jobs:
-  install-galaxy:
-    uses: ksuderman/github-action-galaxy-k8s/.github/workflows/action.yaml@master
-    with:
-      api-key: secret
+#  install-galaxy:
+#    uses: ksuderman/github-action-galaxy-k8s/.github/workflows/action.yaml@master
+#    with:
+#      api-key: secret
 
-  create-galaxy-user:
-    name: Create a Galaxy user
+  install-galaxy:
+    name: Install Galaxy and create a user
     runs-on: ubuntu-latest
     needs: [ install-galaxy ]
     steps:
@@ -25,9 +25,11 @@ jobs:
         with:
            persist-credentials: false
 
-#      - uses: ksuderman/github-action-galaxy-k8s/.github/workflows/test-action.yaml@master
-#        with:
-#          api-key: secret
+      - uses: ksuderman/github-action-galaxy-k8s@master
+        with:
+          api-key: secret
+          reserved-cores: 0
+          reserved-mem-gb: 0
 #          values_file: values.yml
 #            configs:
 #              galaxy.yml:
