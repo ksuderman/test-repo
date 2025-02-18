@@ -30,6 +30,6 @@ jobs:
             "password": "password"
           }
           EOF
-          curl -X POST -H "x-api-key: secret" -H "Content-Type: application/json" -d @/tmp/user.json http://localhost/api/users
+          curl -X POST -H "x-api-key: secret" -H "Content-Type: application/json" -d @/tmp/user.json http://localhost/api/users | jq
           
 
