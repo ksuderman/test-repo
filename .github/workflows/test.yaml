@@ -19,8 +19,6 @@ jobs:
       - uses: ksuderman/github-action-galaxy-k8s@master
         with:
           api-key: secret
-          reserved-cores: 0
-          reserved-mem-gb: 0
 #          values_file: values.yml
 #            configs:
 #              galaxy.yml:
