@@ -1,15 +1,7 @@
 name: Test the galaxy-k8s action
 on:
-  workflow_dispatch:
-    inputs:
-      manual-package-invocation:
-        description: 'Package (y/n)?'
-        required: true
-        default: 'y'
-      branch-name:
-        description: 'Branch name to package'
-        required: true
-        default: 'master'
+  workflow_dispatch: {}
+
 jobs:
 #  install-galaxy:
 #    uses: ksuderman/github-action-galaxy-k8s/.github/workflows/action.yaml@master
