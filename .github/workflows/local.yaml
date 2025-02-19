@@ -1,4 +1,4 @@
-name: Run ABM using configuration defined in the workflow
+name: Workflow configuaration
 on:
   workflow_dispatch:
     inputs:

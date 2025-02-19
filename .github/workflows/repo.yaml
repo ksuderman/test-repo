@@ -1,4 +1,4 @@
-name: Run ABM using configuration defined in the repository
+name: Repository configuration
 on:
   workflow_dispatch:
     inputs:
