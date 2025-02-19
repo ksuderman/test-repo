@@ -1,0 +1,4 @@
+localhost:
+  url: http://localhost
+  key: secret
+  kube: /home/runner/.kube/config
