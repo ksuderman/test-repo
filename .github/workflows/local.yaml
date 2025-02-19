@@ -1,4 +1,4 @@
-name: Test the galaxy-k8s action
+name: Run ABM using configuration defined in the workflow
 on:
   workflow_dispatch:
     inputs:
