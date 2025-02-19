@@ -19,7 +19,7 @@ jobs:
           api-key: secret
           values_file: values.yml
 
-      - name: Install and configure ABM, then run a benchmark
+      - name: Install ABM
         shell: bash
         run: |
           pip install gxabm
@@ -31,7 +31,7 @@ jobs:
           # Create a Galaxy user and an API key
           key=$(abm localhost user create admin admin@example.com galaxypassword | jq -r .key)
           abm config key localhost $key
-          # Import a workflow, a history, and generate a benchmark
+          # Import a workflow and a history
           abm localhost workflow import variant
           abm localhost history import variant-2g
           # Validate and run the benchmark
