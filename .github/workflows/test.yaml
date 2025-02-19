@@ -20,12 +20,8 @@ jobs:
           api-key: secret
           values_file: values.yml
 
-#      - name: Set up Python
-#        uses: actions/setup-python@v4
-#        with:
-#          python-version: '3.12'
-
       - name: Install and configure ABM, then run a benchmark
+        shell: bash
         run: |
           # Install ABM
           pip install gxabm
@@ -35,12 +31,6 @@ jobs:
           abm config create localhost $HOME/.kube/config
           abm config key localhost secret
           abm config url localhost http://localhost
-#          cat << EOF >> $HOME/.abm/profile.yml
-#          localhost:
-#            url: http://localhost
-#            key: secret
-#            kube: $HOME/.kube/config
-#          EOF
           abm config list
           ls $HOME/.abm
           cat $HOME/.abm/profile.yml
