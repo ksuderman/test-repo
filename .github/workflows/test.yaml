@@ -31,12 +31,19 @@ jobs:
           pip install gxabm
           abm --version
           # Configure ABM
+          mkdir -p $HOME/.abm
           abm config create localhost $HOME/.kube/config
+          abm config key localhost secret
+          abm config url localhost http://localhost
+#          cat << EOF >> $HOME/.abm/profile.yml
+#          localhost:
+#            url: http://localhost
+#            key: secret
+#            kube: $HOME/.kube/config
+#          EOF
           abm config list
           ls $HOME/.abm
           cat $HOME/.abm/profile.yml
-          abm config key localhost secret
-          abm config url localhost http://localhost
           # Create a Galaxy user and an API key
           key=$(abm localhost user create admin admin@example.com galaxypassword | jq -r .key)
           abm config key localhost $key
