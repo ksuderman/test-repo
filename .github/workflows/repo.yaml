@@ -1,0 +1,42 @@
+name: Run ABM using configuration defined in the repository
+on:
+  workflow_dispatch:
+    inputs:
+      values_file:
+        description: 'Values file to use for the Galaxy Helm chart'
+        required: false
+jobs:
+  install-galaxy:
+    name: Install Galaxy and run a benchmark with ABM
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - uses: ksuderman/github-action-galaxy-k8s@master
+        with:
+          api-key: secret
+          values_file: values.yml
+
+      - name: Install and configure ABM, then run a benchmark
+        shell: bash
+        run: |
+          pip install gxabm
+          abm --version
+
+      - name: Run ABM using configuration defined in the repository
+        shell: bash
+        run: |
+          # Create a Galaxy user and an API key
+          key=$(abm localhost user create admin admin@example.com galaxypassword | jq -r .key)
+          abm config key localhost $key
+          # Import a workflow, a history, and generate a benchmark
+          abm localhost workflow import variant
+          abm localhost history import variant-2g
+          # Validate and run the benchmark
+          abm localhost benchmark validate benchmark.yml          
+          abm localhost benchmark run benchmark.yml 
+          abm localhost history list
+          abm localhost jobs list
+          
