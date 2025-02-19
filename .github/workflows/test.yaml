@@ -20,16 +20,57 @@ jobs:
           api-key: secret
           values_file: values.yml
 
-      - name: Create a Galaxy user
+#      - name: Set up Python
+#        uses: actions/setup-python@v4
+#        with:
+#          python-version: '3.12'
+
+      - name: Install, configure, and run an ABM benchmark
         run: |
-          echo "Creating a Galaxy user"
-          cat > /tmp/user.json << EOF
-          {
-            "username": "admin",
-            "email": "admin@example.org",
-            "password": "password"
-          }
+          pip install gxabm
+          abm create localhost $HOME/.kube/config
+          abm config localhost key secret
+          abm config localhost url http://localhost
+          abm localhost user create admin admin@example.com galaxypassword
+          key=$(abm localhost user key admin)
+          abm config localhost key $key
+          abm localhost workflow import https://benchmarking-inputs.s3.amazonaws.com/Variant/Galaxy-Workflow-Variant_analysis_on_WGS_PE_data.ga
+          abm localhost history import https://benchmarking-inputs.s3.amazonaws.com/Variant/Variant-calling-inputs---2GB.rocrate.zip
+          cat > benchmark.yml << EOF
+            - output_history_base_name: Variant-Calling
+              workflow_id: Variant analysis on WGS PE data
+              runs:
+              - history_name: 2GB
+                inputs:
+                - name: Paired Collection
+                  collection: SRR24043307-2GB
+                - name: GenBank genome
+                  dataset_id: GRCh38.p14.gbff.gz
+                - name: Name for genome database
+                  value: h38          
           EOF
-          curl -X POST -H "x-api-key: secret" -H "Content-Type: application/json" -d @/tmp/user.json http://localhost/api/users | jq
+          abm localhost benchmark validate benchmark.yml
+          abm localhost benchmark run benchmark.yml 
+          abm localhost history list
+          abm localhost jobs list
+#          mkdir -p ~/.abm
+#          cat << EOF >> ~/.abm/profile.yml
+#          localhost:
+#            url: http://localhost
+#            key: secret
+#            kube: $HOME/.kube/config
+#          EOF
+
+#      - name: Create a Galaxy user
+#        run: |
+#          echo "Creating a Galaxy user"
+#          cat > /tmp/user.json << EOF
+#          {
+#            "username": "admin",
+#            "email": "admin@example.org",
+#            "password": "password"
+#          }
+#          EOF
+#          curl -X POST -H "x-api-key: secret" -H "Content-Type: application/json" -d @/tmp/user.json http://localhost/api/users | jq
           
 
