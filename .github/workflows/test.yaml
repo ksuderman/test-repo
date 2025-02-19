@@ -36,8 +36,7 @@ jobs:
         if: ${{ github.event.inputs.from-repo == false }}
         run: |        
           # Configure ABM
-          #mkdir -p $HOME/.abm
-          rm $HOME/.abm/*.yml
+          mkdir -p $HOME/.abm
           abm config create localhost $HOME/.kube/config
           abm config key localhost secret
           abm config url localhost http://localhost
