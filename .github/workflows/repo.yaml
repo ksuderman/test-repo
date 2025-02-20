@@ -22,8 +22,8 @@ jobs:
       - name: Get Helm values
         shell: bash
         run: |
-          helm get values galaxy -n galaxy --all --format yaml
-          
+          helm get values galaxy -n galaxy --all --output yaml
+
       - name: Install ABM
         shell: bash
         run: |
