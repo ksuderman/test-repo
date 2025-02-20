@@ -41,7 +41,7 @@ jobs:
         shell: bash
         run: |
           # Create a Galaxy user and an API key
-          abm config key localhost secret
+          abm config key localhost changeme
           abm config show localhost
           # Import a workflow and a history
           abm localhost workflow import variant
