@@ -36,7 +36,6 @@ jobs:
           }
           EOF
           curl -X POST -H "x-api-key: secret" -H "Content-Type: application/json" -d @/tmp/user.json http://localhost/api/users | jq
-          
 
       - name: Run ABM using configuration defined in the repository
         shell: bash
