@@ -44,8 +44,8 @@ jobs:
           # Create a Galaxy user and an API key
           abm config key localhost secret
           abm config show localhost
-          key=$(abm localhost user key admin)
-          abm config key localhost $key
+#          key=$(abm localhost user key admin)
+#          abm config key localhost $key
           # Import a workflow and a history
           abm localhost workflow import variant
           abm localhost history import variant-2g
