@@ -42,6 +42,7 @@ jobs:
         shell: bash
         run: |
           # Create a Galaxy user and an API key
+          abm config key localhost secret
           abm config show localhost
           key=$(abm localhost user key admin)
           abm config key localhost $key
