@@ -42,7 +42,7 @@ jobs:
         shell: bash
         run: |
           # Create a Galaxy user and an API key
-          #abm localhost user create admin admin@example.com galaxypassword
+          abm config show localhost
           key=$(abm localhost user key admin)
           abm config key localhost $key
           # Import a workflow and a history
