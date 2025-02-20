@@ -5,6 +5,7 @@ configs:
       require_login: false
       show_welcome_with_login: true
       allow_user_creation: true
+      master_api_key: "secret"
 
 ingress:
   enabled: true
