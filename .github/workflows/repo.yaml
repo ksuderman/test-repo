@@ -19,6 +19,11 @@ jobs:
           api-key: secret
           values_file: values.yml
 
+      - name: Get Helm values
+        shell: bash
+        run: |
+          helm get values galaxy -n galaxy --all --format yaml
+          
       - name: Install ABM
         shell: bash
         run: |
