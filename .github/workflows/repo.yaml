@@ -30,30 +30,19 @@ jobs:
           pip install gxabm
           abm --version
 
-#      - name: Create a Galaxy user
-#        shell: bash
-#        run: |
-#          cat > /tmp/user.json << EOF
-#          {
-#              "email": "admin@example.com",
-#              "password": "galaxypassword",
-#              "username": "admin"
-#          }
-#          EOF
-#          curl -X POST -H "x-api-key: secret" -H "Content-Type: application/json" -d @/tmp/user.json http://localhost/api/users | jq
-
       - name: Run ABM using configuration defined in the repository
         shell: bash
         run: |
           abm localhost user create admin admin@example.com galaxypassword
           key=$(abm localhost user key admin)
           abm config key localhost $key
-          # Import a workflow and a history
+          # Import a workflow using an alias defined in ~/.abm/workflows.yml 
           abm localhost workflow import variant
+          # Import a history using an alias defined in ~/.abm/histories.yml 
           abm localhost history import variant-2g
           # Validate and run the benchmark
           abm localhost benchmark validate benchmark.yml          
           abm localhost benchmark run benchmark.yml 
-          abm localhost history list
           abm localhost jobs list
-          
+          abm localhost history list
+          abm localhost history summarize           
