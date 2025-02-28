@@ -22,19 +22,20 @@ jobs:
         with:
           persist-credentials: false
 
-      - uses: ksuderman/github-action-galaxy-k8s@master
+      - uses: ksuderman/github-action-galaxy-k8s@dev
         with:
           api-key: secret
-          values_file: values.yml
+          values-file: values.yml
+          admin-users: admin@example.com
 
-      - name: Install and configure ABM, then run a benchmark
+      - name: Install ABM
         shell: bash
         run: |
           # Install ABM
           pip install gxabm
           abm --version
 
-      - name: Configure ABM and run a benchmark
+      - name: Configure ABM and Galaxy
         shell: bash
         run: |        
           # Configure ABM
@@ -51,6 +52,10 @@ jobs:
           # Import a workflow, a history, and generate a benchmark
           abm localhost workflow import ${{ inputs.workflow }}
           abm localhost history import ${{ inputs.history }}
+
+      - name: Run the benchmark
+        shell: bash
+        run: |
           cat > benchmark.yml << EOF
             - output_history_base_name: Variant-Calling
               workflow_id: Variant analysis on WGS PE data
@@ -64,6 +69,7 @@ jobs:
                 - name: Name for genome database
                   value: h38          
           EOF
+          cat benchmark.yml
           # Validate and run the benchmark
           abm localhost benchmark validate benchmark.yml          
           abm localhost benchmark run benchmark.yml 
