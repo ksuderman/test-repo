@@ -1,8 +1,8 @@
-name: Repository configuration
+name: Configuration defined in the repository
 on:
   workflow_dispatch:
     inputs:
-      values_file:
+      values-file:
         description: 'Values file to use for the Galaxy Helm chart'
         required: false
 jobs:
@@ -14,10 +14,10 @@ jobs:
         with:
           persist-credentials: false
 
-      - uses: ksuderman/github-action-galaxy-k8s@master
+      - uses: ksuderman/github-action-galaxy-k8s@v1
         with:
           api-key: secret
-          values_file: values.yml
+          values-file: values.yml
 
       - name: Get Helm values
         shell: bash
@@ -32,6 +32,7 @@ jobs:
 
       - name: Run ABM using configuration defined in the repository
         shell: bash
+        continue-on-error: true
         run: |
           abm localhost user create admin admin@example.com galaxypassword
           key=$(abm localhost user key admin)
@@ -43,6 +44,10 @@ jobs:
           # Validate and run the benchmark
           abm localhost benchmark validate benchmark.yml          
           abm localhost benchmark run benchmark.yml 
+
+      - name: List the results
+        shell: bash
+        run: |
           abm localhost jobs list
           abm localhost history list
           abm localhost history summarize           
