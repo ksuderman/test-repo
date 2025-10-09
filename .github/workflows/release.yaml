@@ -6,7 +6,7 @@ on:
 jobs:
   release:
     name: Handle release command
-    # Only run on PR comments from repository owners/admins
+    # Only run on PR comments from repository owners
     if: |
       github.event.issue.pull_request &&
       startsWith(github.event.comment.body, '/release') &&

@@ -23,10 +23,17 @@ This is a test repository for GitHub Actions and GitHub-related automation, spec
 
 - `values.yml`: Helm values for Galaxy K8s deployment (includes Galaxy config, ingress, persistence, CVMFS, PostgreSQL, RabbitMQ)
 - `VERSION`: Current semantic version number
-- `bump`: Bash script to increment version numbers
+- `bump`: Self-contained bash script to increment version numbers (no external dependencies)
 - `RELEASE_DESIGN.md`: Documents the release process and automation design
+
+### GitHub Workflows
+
 - `.github/workflows/test.yaml`: Tests Galaxy K8s action with ABM benchmarks (can use workflow or repo-based config)
 - `.github/workflows/repo.yaml`: Tests with repository-based configuration using aliases
+- `.github/workflows/test-pr.yaml`: Runs on all PRs to `dev` or `master`, executes `test.sh` if present
+- `.github/workflows/release.yaml`: Handles `/release [major|minor|patch]` command on dev→master PRs
+- `.github/workflows/merge-guard.yaml`: Handles `/merge` command on feature→dev PRs
+- `.github/branch-protection.md`: Instructions for configuring branch protection in GitHub Settings
 
 ## Workflow Architecture
 
@@ -72,13 +79,55 @@ abm <profile> history list
 abm <profile> history summarize
 ```
 
-## Release Process
+## Merge and Release Process
 
-Pull requests from `dev` to `master` trigger releases when a repository owner comments `/release [major|minor|patch]`, which:
-1. Increments the VERSION file
-2. Merges `dev` into `master`
-3. Creates a GitHub tag with the version number
-4. Creates a GitHub release
+### Merging Pull Requests
+
+**All merges are controlled via chat-ops commands. Manual merges via GitHub UI must be disabled through branch protection.**
+
+- **Feature → Dev PRs**: Comment `/merge` on the PR (owner only)
+- **Dev → Master PRs**: Comment `/release [major|minor|patch]` on the PR (owner/admin only)
+  - Do NOT use `/merge` on dev→master PRs, only `/release`
+
+**Workflow behavior:**
+- Valid commands receive a 🚀 reaction
+- Invalid commands receive a 😕 reaction with error message
+- Unauthorized users receive a 👎 reaction with denial message
+- Successful operations post a ✅ confirmation comment
+
+### Release Workflow (Dev → Master)
+
+When an owner/admin comments `/release [major|minor|patch]` on a dev→master PR:
+1. Validates the PR is from `dev` to `master`
+2. Parses the bump type (major, minor, or patch)
+3. Increments the VERSION file according to semantic versioning
+4. Commits the version bump to `dev` branch
+5. Merges `dev` into `master` (no-ff merge)
+6. Creates a Git tag (e.g., `v1.4.1`)
+7. Creates a GitHub release
+8. Comments on PR with success status
+
+### Merge Workflow (Feature → Dev)
+
+When an owner comments `/merge` on a feature→dev PR:
+1. Validates the user is a repository owner
+2. Rejects if the PR is dev→master (must use `/release` instead)
+3. Merges the PR using standard merge commit
+4. Comments on PR with success status
+
+### Branch Protection Setup Required
+
+**⚠️ Important:** Branch protection must be configured manually in GitHub Settings to enforce the chat-ops workflow.
+
+See `.github/branch-protection.md` for detailed configuration instructions.
+
+**Key protections needed:**
+- Lock both `master` and `dev` branches
+- Disable manual merges via GitHub UI
+- Require pull requests before merging
+- Require `test` status check to pass
+- Block direct pushes (except from `github-actions[bot]`)
+- Restrict who can push to matching branches
 
 ## Data Directories
 
