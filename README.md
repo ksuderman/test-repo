@@ -68,13 +68,15 @@ For quick updates to documentation or GitHub configuration files, you can merge 
 5. The workflow will:
    - Add a 🚀 reaction to confirm the command
    - Validate all changed files are markdown or GitHub config files
-   - Merge the PR if validation passes
-   - Post a ✅ confirmation comment
+   - Merge the PR to `master` if validation passes
+   - Automatically merge the changes from `master` back into `dev` to keep branches in sync
+   - Post ✅ confirmation comments for both operations
 
 **Note:**
 - If the PR contains any other file types, it will be rejected with a 😕 reaction and a list of invalid files
 - This bypass is only for documentation and configuration changes that don't affect the version
 - Cannot be used for `dev` → `master` PRs (must use `/release` instead)
+- The automatic sync to `dev` ensures documentation/config changes don't cause branch divergence
 
 ## Branch Protection
 
@@ -108,6 +110,7 @@ The GitHub Actions bot has bypass permissions to enable automated merges.
 
 ### Master Docs/Config Merge Workflow
 - **Trigger**: `/merge` comment on PRs to master (not from dev)
-- **Purpose**: Allows quick merging of documentation and configuration changes to master
+- **Purpose**: Allows quick merging of documentation and configuration changes to master, then syncs to dev
 - **Restrictions**: Only markdown files (`*.md`) and `.github/` directory files allowed
 - **Permissions**: Repository owners only
+- **Additional behavior**: Automatically merges changes back to `dev` branch after merging to `master`
