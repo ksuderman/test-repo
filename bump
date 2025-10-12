@@ -4,6 +4,7 @@ if [[ $# != 1 ]] ; then
 	echo "Please specify one of major, minor, or patch"
 	exit 1
 fi
+
 case $1 in
 	major|minor|patch)
 		;;
@@ -12,6 +13,27 @@ case $1 in
 		exit 1
 		;;
 esac
-version=$(/Users/suderman/bin/bump $1 $(cat VERSION))
-echo $version > VERSION
-echo "New version is $(cat VERSION)"
+
+# Read current version
+current_version=$(cat VERSION)
+IFS='.' read -r major minor patch <<< "$current_version"
+
+# Increment based on argument
+case $1 in
+	major)
+		major=$((major + 1))
+		minor=0
+		patch=0
+		;;
+	minor)
+		minor=$((minor + 1))
+		patch=0
+		;;
+	patch)
+		patch=$((patch + 1))
+		;;
+esac
+
+new_version="$major.$minor.$patch"
+echo "$new_version" > VERSION
+echo "New version is $new_version"
