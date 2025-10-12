@@ -17,11 +17,11 @@ echo "Applying rulesets to repository: $REPO"
 # Apply master branch ruleset
 echo ""
 echo "Creating ruleset for master branch..."
-/usr/local/bin/gh api \
-  "/repos/$REPO/rulesets" \
+gh api \
   --method POST \
   -H "Accept: application/vnd.github+json" \
   -H "X-GitHub-Api-Version: 2022-11-28" \
+  "/repos/$REPO/rulesets" \
   --input .github/ruleset-master.json
 
 echo "✓ Master branch ruleset created"
@@ -29,11 +29,11 @@ echo "✓ Master branch ruleset created"
 # Apply dev branch ruleset
 echo ""
 echo "Creating ruleset for dev branch..."
-/usr/local/bin/gh api \
-  "/repos/$REPO/rulesets" \
+gh api \
   --method POST \
   -H "Accept: application/vnd.github+json" \
   -H "X-GitHub-Api-Version: 2022-11-28" \
+  "/repos/$REPO/rulesets" \
   --input .github/ruleset-dev.json
 
 echo "✓ Dev branch ruleset created"
