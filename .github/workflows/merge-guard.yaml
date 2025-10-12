@@ -12,7 +12,7 @@ jobs:
     if: github.event_name == 'issue_comment' && github.event.issue.pull_request
     permissions:
       pull-requests: write
-      contents: read
+      contents: write
 
     steps:
       - name: Check if comment is merge approval
