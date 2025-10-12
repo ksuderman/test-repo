@@ -35,8 +35,7 @@
       "parameters": {
         "required_status_checks": [
           {
-            "context": "test",
-            "integration_id": null
+            "context": "test"
           }
         ],
         "strict_required_status_checks_policy": true
