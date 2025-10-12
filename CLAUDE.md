@@ -33,7 +33,6 @@ This is a test repository for GitHub Actions and GitHub-related automation, spec
 - `.github/workflows/test-pr.yaml`: Runs on all PRs to `dev` or `master`, executes `test.sh` if present
 - `.github/workflows/release.yaml`: Handles `/release [major|minor|patch]` command on dev→master PRs
 - `.github/workflows/merge-guard.yaml`: Handles `/merge` command on feature→dev PRs
-- `.github/workflows/master-docs-merge.yaml`: Handles `/merge` command for docs/config changes to master
 - `.github/branch-protection.md`: Instructions for configuring branch protection in GitHub Settings
 
 ## Workflow Architecture
@@ -89,9 +88,6 @@ abm <profile> history summarize
 - **Feature → Dev PRs**: Comment `/merge` on the PR (owner only)
 - **Dev → Master PRs**: Comment `/release [major|minor|patch]` on the PR (owner/admin only)
   - Do NOT use `/merge` on dev→master PRs, only `/release`
-- **Docs/Config → Master PRs**: Comment `/merge` on the PR (owner only)
-  - Only allowed for PRs that exclusively modify markdown files (*.md) or files in .github directory
-  - Cannot be used for dev→master PRs (must use `/release` instead)
 
 **Workflow behavior:**
 - Valid commands receive a 🚀 reaction
@@ -118,18 +114,6 @@ When an owner comments `/merge` on a feature→dev PR:
 2. Rejects if the PR is dev→master (must use `/release` instead)
 3. Merges the PR using standard merge commit
 4. Comments on PR with success status
-
-### Master Docs/Config Merge Workflow
-
-When an owner comments `/merge` on a PR to master (not from dev):
-1. Validates the user is a repository owner
-2. Rejects if the PR is from dev→master (must use `/release` instead)
-3. Gets all changed files and validates they are either:
-   - Markdown files (*.md)
-   - Files in the .github directory
-4. If validation passes, merges the PR using standard merge commit
-5. If validation fails, comments with list of invalid files
-6. Comments on PR with success status
 
 ### Branch Protection Setup Required
 
