@@ -14,8 +14,8 @@ jobs:
       - name: Set output values
         id: values
         run: |
-          echo "tag=25.0.2" >> $GITHUB_OUTPUT
-          echo "version=25.0.2" >> $GITHUB_OUTPUT
+          echo "tag=25.0.3" >> $GITHUB_OUTPUT
+          echo "version=25.0.3" >> $GITHUB_OUTPUT
   smoke-test:
     name: Try installing the new image
     runs-on: ubuntu-latest
@@ -51,7 +51,7 @@ jobs:
           --create-namespace \
           --set persistence.accessMode="ReadWriteOnce" \
           --set resources.requests.memory=0Mi,resources.requests.cpu=0m \
-          --set image.tag=${{ needs.build.outputs.tag }} \
+          --set image.tag="25.0.2" \
           --wait \
           --timeout=1200s
       - name: Debug deployment on failure
