@@ -46,7 +46,7 @@ jobs:
           --timeout=1200s
       - name: Install Galaxy using the image we just pushed
         run: |
-          helm install galaxy galaxy/galaxy --version 6.5.0 \
+          helm install galaxy galaxy/galaxy \
           --namespace galaxy \
           --create-namespace \
           --set persistence.accessMode="ReadWriteOnce" \
@@ -133,7 +133,7 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.PULL_REQUEST_TOKEN }}
           commit-message: "Update Galaxy to version ${{ needs.build.outputs.version }}"
           title: "Update Galaxy to version ${{ needs.build.outputs.version }}"
           body: |
