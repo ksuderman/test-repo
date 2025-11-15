@@ -123,11 +123,19 @@ jobs:
 
       - name: Update Chart.yaml appVersion
         run: |
+          echo "=== Before updating Chart.yaml ==="
+          grep "^appVersion:" galaxy/Chart.yaml
           sed -i "s/^appVersion:.*/appVersion: \"${{ needs.build.outputs.version }}\"/" galaxy/Chart.yaml
+          echo "=== After updating Chart.yaml ==="
+          grep "^appVersion:" galaxy/Chart.yaml
 
       - name: Update values.yaml image.tag
         run: |
+          echo "=== Before updating values.yaml ==="
+          grep "^  tag:" galaxy/values.yaml || echo "Pattern not found!"
           sed -i "s/^  tag:.*/  tag: \"${{ needs.build.outputs.tag }}\"/" galaxy/values.yaml
+          echo "=== After updating values.yaml ==="
+          grep "^  tag:" galaxy/values.yaml || echo "Pattern not found!"
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6
