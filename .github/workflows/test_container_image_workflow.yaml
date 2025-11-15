@@ -1,4 +1,4 @@
-name: Build Container Image
+name: Test the Smoke Test and PR workflow
 on:
   workflow_dispatch: {}
 
@@ -127,6 +127,7 @@ jobs:
         uses: actions/checkout@v5
         with:
           repository: galaxyproject/galaxy-helm
+#          token: ${{ secrets.PULL_REQUEST_TOKEN }}
           token: ${{ secrets.GITHUB_TOKEN }}
           persist-credentials: true
 
