@@ -8,28 +8,19 @@ jobs:
     name: Build container image for Galaxy repos
     runs-on: ubuntu-latest
     outputs:
-      tag: ${{ steps.branch.outputs.name }}
-      version: ${{ steps.version.outputs.version }}
+      tag: ${{ steps.values.outputs.tag }}
+      version: ${{ steps.values.outputs.version }}
     steps:
-      - uses: actions/setup-python@v4
-        with:
-          python-version: '3.12'
-      - name: Set outputs
-        id: commit
-        run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
-      - name: Set branch name
-        id: branch
-        run: echo "name=25.0.2" >> $GITHUB_OUTPUT
-      - name: Generate a fake version number
-        id: version
-        run: echo "name=25.0.2" >> $GITHUB_OUTPUT
+      - name: Set output values
+        id: values
+        run: |
+          echo "tag=25.0.2" >> $GITHUB_OUTPUT
+          echo "version=25.0.2" >> $GITHUB_OUTPUT
   smoke-test:
     name: Try installing the new image
     runs-on: ubuntu-latest
     needs: [ build ]
     steps:
-#      - name: Install Helm
-#        run: curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
       - name: Start k8s locally
         uses: jupyterhub/action-k3s-helm@v4
         with:
@@ -55,7 +46,7 @@ jobs:
           --timeout=1200s
       - name: Install Galaxy using the image we just pushed
         run: |
-          helm install galaxy galaxy/galaxy \
+          helm install galaxy galaxy/galaxy --version 6.5.0 \
           --namespace galaxy \
           --create-namespace \
           --set persistence.accessMode="ReadWriteOnce" \
